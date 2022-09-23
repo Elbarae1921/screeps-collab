@@ -2,7 +2,9 @@
   "name": "screeps-bot",
   "version": "1.0.0",
   "description": "",
+  "license": "MIT",
   "main": "index.js",
+  "packageManager": "yarn@1.22.19",
   "scripts": {
     "lint": "eslint \"src/**/*.ts\"",
     "build": "rollup -c",

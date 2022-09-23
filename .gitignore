@@ -1,6 +1,3 @@
-# yarn lock file
-/yarn.lock
-
 # npm lock file (v5.0.0+)
 /package-lock.json
 
@@ -20,6 +17,9 @@ screeps.json
 
 # ScreepsServer data from integration tests
 /server
+
+# jest CodeCov
+/coverage
 
 # Numerous always-ignore extensions
 *.diff
