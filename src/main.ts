@@ -1,4 +1,4 @@
-import * as PromiseLoop from 'utils/promise';
+import {processTurn} from 'utils';
 
 export const loop = () => {
   console.log('Hello World!');
@@ -14,4 +14,4 @@ export async function x() {
 
 Promise.resolve(4).then(console.log).finally(() => {});
 
-PromiseLoop.startPromiseLoop();
+processTurn();

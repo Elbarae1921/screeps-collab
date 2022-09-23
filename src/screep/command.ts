@@ -1,14 +1,20 @@
-enum CommandStatus {
-  Success = 0,
-  Unreachable = 1,
-  NotSafe = 2,
-  Subroutine = 3,
-  GeneralFailure = 4
+import { Screep } from "./screep";
+
+export enum CommandStatus {
+  Success = 'Success',
+  Unreachable = 'Unreachable',
+  NotSafe = 'Not Safe',
+  Subroutine = 'Subroutine',
+  GeneralFailure = 'General Failure'
 }
 
-export type CommandState =
+export type CommandState = Readonly<
 | {
-  type: CommandStatus.Success | CommandStatus.Subroutine
+  type: CommandStatus.Success
+}
+| {
+  type: CommandStatus.Subroutine,
+  commands: Command[]
 }
 | {
   type: CommandStatus.Unreachable,
@@ -21,6 +27,9 @@ export type CommandState =
 | {
   type: CommandStatus.GeneralFailure,
   reason?: string
-};
+}>;
 
-export type Command<C extends Creep> = (creep: C) => Promise<CommandState>;
+export type Command = Readonly<{
+  name: string;
+  run(creep: Screep): Promise<CommandState>;
+}>;
