@@ -1,22 +1,19 @@
-// An example of how to extend the global/Screeps types
-
 declare global {
-  interface Memory {
-    creepIndex?: number;
-  }
-
-  interface Creep {
-    wander(): CreepMoveReturnCode;
+  interface Array<T> {
+    takeWhile(predicate: (value: T, index: number, array: T[]) => unknown): T[];
   }
 }
 
 export function injectMethods(): void {
-
-  Creep.prototype.wander = function(): CreepMoveReturnCode {
-    if (!this.fatigue) {
-      let direction = (Math.floor(Math.random() * 8) + 1) as DirectionConstant;
-      return this.move(direction);
+  Array.prototype.takeWhile = function<T>(this: Array<T>, predicate: (value: T, index: number, array: T[]) => unknown): T[] {
+    const result: T[] = [];
+    let i = 0;
+    for (const value of this) {
+      if (predicate(value, i, this)) {
+        result.push(value);
+      } else break;
+      i++;
     }
-    else return ERR_TIRED;
+    return result;
   }
 }

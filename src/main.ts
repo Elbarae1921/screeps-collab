@@ -1,11 +1,9 @@
-import {processTurn} from 'utils';
+import { injectMethods } from 'declarations';
+import {normalizeError, processTurn} from 'utils';
 
-export const loop = () => {
-  Promise.resolve("World").then(value => console.log(`Hello ${value}!`));
+injectMethods();
+
+export const loop = normalizeError(() => {
+  // Bot code here
   processTurn();
-}
-
-// export const loop = () => {
-//   console.log(true ? 'a' : 'b');
-//   console.log(null ?? 'test');
-// }
+});

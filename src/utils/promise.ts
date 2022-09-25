@@ -121,7 +121,12 @@ class MyPromise<T> {
           p.state = 'Waiting';
         });
         promiseQueue.push(...this.thens);
-      }
+        if (this.state === 'Rejected' && this.thens.length === 0) {
+          if (this.data instanceof Error) {
+            throw this.data;
+          } else throw new Error(this.data + '');
+        }
+      } else if (data instanceof Error) throw data;
     }
     const resolveFunction: (value: T) => void = setState('Resolved');
     const rejectFunction: (error: unknown) => void = setState('Rejected');
@@ -142,7 +147,7 @@ class MyPromise<T> {
   public static startPromiseLoop(): void {
     while (promiseQueue.length) {
       const promise = promiseQueue.find(p => p.state === 'Waiting');
-      if (!promise) return;
+      if (!promise) break;
       promise.runBody();
     }
   }
