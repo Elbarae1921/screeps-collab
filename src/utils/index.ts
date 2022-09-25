@@ -1,9 +1,10 @@
-import "./setTimeout";
+import "./set-timeout";
 import "./promise";
 import { startPromiseLoop } from "./promise";
 import { advanceTick } from "./tick-check";
 
 export { Reference } from "./reference";
+export { Property, ConstantProperty } from './property';
 export { promisify } from "./promisify";
 export { onTick, onTickCallback } from "./tick-check";
 export type { Brand, Flavor } from "./types";

@@ -18,6 +18,9 @@ screeps.json
 # ScreepsServer data from integration tests
 /server
 
+# location file
+location.json
+
 # jest CodeCov
 /coverage
 
