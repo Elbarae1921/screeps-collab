@@ -7,6 +7,7 @@ export { Reference } from "./reference";
 export { Property, ConstantProperty } from './property';
 export { promisify } from "./promisify";
 export { onTick, onTickCallback } from "./tick-check";
+export { getBodyFor, getCostOfBody } from './body';
 export type { Brand, Flavor } from "./types";
 
 export function processTurn() {
