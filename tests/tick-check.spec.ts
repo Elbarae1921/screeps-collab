@@ -1,9 +1,10 @@
-import { startPromiseLoop } from "../src/utils/promise";
+import { startPromiseLoop, overWritePromise } from "../src/utils/promise";
 import { advanceTick, onTick, onTickCallback } from "../src/utils/tick-check";
 import { mockGlobal } from "./utils/mocking";
 
 beforeEach(() => {
   mockGlobal('Game', { time: 1 });
+  overWritePromise();
 });
 
 describe('onTickCallback', () => {

@@ -36,10 +36,21 @@ class MyPromise<T> {
   }
 
   public static race<T>(promises: MyPromise<T>[]): MyPromise<T> {
+    let done = false;
     return new MyPromise((resolve, reject) => {
       promises.forEach(p => {
-        p.then(resolve);
-        p.then(reject);
+        p.then(v => {
+          if (!done) {
+            done = true;
+            resolve(v);
+          }
+        });
+        p.catch(v => {
+          if (!done) {
+            done = true;
+            reject(v);
+          }
+        });
       });
     });
   }
@@ -155,6 +166,5 @@ class MyPromise<T> {
 
 const promiseQueue: MyPromise<unknown>[] = [];
 
-globalThis.Promise = MyPromise as any;
-
+export const overWritePromise = () => globalThis.Promise = MyPromise as any;
 export const startPromiseLoop = MyPromise.startPromiseLoop;

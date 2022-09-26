@@ -1,5 +1,8 @@
-import "../src/utils/promise";
-import { startPromiseLoop } from "../src/utils/promise";
+import { overWritePromise, startPromiseLoop } from "../src/utils/promise";
+
+beforeEach(() => {
+  overWritePromise();
+});
 
 describe("Promise", () => {
 
@@ -56,13 +59,13 @@ describe("Promise", () => {
 
     it('should work with resolved promise', () => {
       expect.assertions(1);
-      Promise.all([Promise.resolve(5)]).then(x => expect(x).toBe(5));
+      Promise.all([Promise.resolve(5)]).then(x => expect(x).toStrictEqual([5]));
       startPromiseLoop();
     });
 
     it('should work with two promises', () => {
       expect.assertions(1);
-      Promise.all([Promise.resolve(5),Promise.resolve(15)]).then(x => expect(x).toBe([5, 15]));
+      Promise.all([Promise.resolve(5),Promise.resolve(15)]).then(x => expect(x).toStrictEqual([5, 15]));
       startPromiseLoop();
     });
 
@@ -73,7 +76,7 @@ describe("Promise", () => {
         new Promise<number>(resolve => setTimeout(resolve, 50, 15))
       ]).then(v => {
         x = v;
-        expect(v).toBe([5, 15]);
+        expect(v).toStrictEqual([5, 15]);
       });
       setTimeout(() => {
         startPromiseLoop();
@@ -98,6 +101,7 @@ describe("Promise", () => {
     });
 
     it('should work with timeouts', done => {
+      expect.assertions(1);
       let x = 0;
       Promise.race([
         new Promise<number>(resolve => setTimeout(resolve, 200, 5)),
