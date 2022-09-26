@@ -1,5 +1,5 @@
 const roomRegex = /^([EW])(\d+)([NS])(\d+)$/;
-
+const mod = (n: number, m: number) => ((n % m) + m) % m;
 export class GlobalPosition {
   constructor(public readonly x: number, public readonly y: number) {}
 
@@ -17,7 +17,22 @@ export class GlobalPosition {
     );
   }
 
+  public toRoomPosition() {
+    const x = mod(this.x, 50);
+    const y = mod(this.y, 50);
+    const dirX = this.x >= 0 ? "E" : "W";
+    const dirY = this.y >= 0 ? "S" : "N";
+    const xRoom = Math.floor(Math.abs(this.x / 50));
+    const yRoom = Math.floor(Math.abs(this.y / 50));
+
+    return new RoomPosition(x, y, `${dirX}${xRoom}${dirY}${yRoom}`);
+  }
+
   public add(b: GlobalPosition): GlobalPosition {
     return new GlobalPosition(this.x + b.x, this.y + b.y);
+  }
+
+  public sub(b: GlobalPosition): GlobalPosition {
+    return new GlobalPosition(this.x - b.x, this.y - b.y);
   }
 }
