@@ -1,5 +1,7 @@
+/**
+ * A tick-persistent storage for an object with an Id
+ */
 export class Reference<T extends _HasId> {
-
   private hasValue?: boolean;
   private value: T | null = null;
   private tickValue: number = -1;

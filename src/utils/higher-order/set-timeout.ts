@@ -1,7 +1,7 @@
 import { onTickCallback } from "./tick-check";
-import { Brand } from "./types";
+import { Brand } from "../types";
 
-type TimeoutId = Brand<number, 'TimeoutId'>;
+type TimeoutId = Brand<number, "TimeoutId">;
 
 declare global {
   /**

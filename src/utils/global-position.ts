@@ -1,8 +1,15 @@
 const roomRegex = /^([EW])(\d+)([NS])(\d+)$/;
 const mod = (n: number, m: number) => ((n % m) + m) % m;
+
+/**
+ * A global positioning system with the center at `E0S0(0, 0)`
+ */
 export class GlobalPosition {
   constructor(public readonly x: number, public readonly y: number) {}
 
+  /**
+   * Creates a global position from a room position
+   */
   static fromRoomPosition(roomPos: RoomPosition): GlobalPosition {
     const roomName = roomPos.roomName;
     const roomMatch = roomRegex.exec(roomName);
@@ -17,7 +24,10 @@ export class GlobalPosition {
     );
   }
 
-  public toRoomPosition() {
+  /**
+   * Converts the global position back into a room position
+   */
+  public toRoomPosition(): RoomPosition {
     const x = mod(this.x, 50);
     const y = mod(this.y, 50);
     const dirX = this.x >= 0 ? "E" : "W";

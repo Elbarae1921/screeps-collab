@@ -1,5 +1,8 @@
 import { Reference } from "./reference";
 
+/**
+ * One-tick cached property of a referenced instance
+ */
 export class Property<A extends _HasId, T> {
   constructor(private instance: Reference<A>, private map: (instance: A) => T) {}
 
@@ -17,6 +20,9 @@ export class Property<A extends _HasId, T> {
   }
 }
 
+/**
+ * Forever cached property of a referenced instance
+ */
 export class ConstantProperty<A extends _HasId, T> extends Property<A, T> {
   constructor(instance: Reference<A>, map: (instance: A) => T) {
     super(instance, map);

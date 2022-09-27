@@ -1,13 +1,6 @@
-import "./set-timeout";
-import "./promise";
-import { startPromiseLoop } from "./promise";
-import { advanceTick } from "./tick-check";
+import { advanceTick, startPromiseLoop } from "./higher-order";
 
-export { Reference } from "./reference";
-export { Property, ConstantProperty } from './property';
-export { promisify } from "./promisify";
-export { onTick, onTickCallback } from "./tick-check";
-export { getBodyFor, getCostOfBody } from './body';
+export { getBodyFor, getCostOfBody } from "./body";
 export type { Brand, Flavor } from "./types";
 
 export function processTurn() {
@@ -15,16 +8,35 @@ export function processTurn() {
   startPromiseLoop();
 }
 
-export function normalizeError(fn: () => void): () => void {
-  return () => {
-    try {
-      fn();
-    }
-    catch(err) {
-      if (err instanceof Error) {
-        err.stack = err.stack?.split('\n').takeWhile(line => !line.includes('__mainLoop')).join('\n');
+type F = () => void;
+/**
+ * Creates a function that is a result of using all of the passed in functions as wrappers.
+ *
+ * @example
+ * const x = monad(a, b, c);
+ * // Is equivalent to:
+ * const x = () => a(b(c()));
+ * @example
+ * const b = () => { something };
+ * const c = () => { something };
+ * const x = monad(a, b, c);
+ * // Is equivalent to:
+ * const x = () => a(() => { b();c(); });
+ */
+export function monad(...funcs: (((fn: F) => F) | F)[]): F {
+  return funcs.reduceRight<F>(
+    (current, nextWrapper) => {
+      if (nextWrapper.length === 0) {
+        const fn = nextWrapper as F;
+        return () => {
+          current();
+          fn();
+        };
+      } else {
+        const fn = nextWrapper as (fn: F) => F;
+        return fn(current);
       }
-      throw err;
-    }
-  }
+    },
+    () => {}
+  );
 }
