@@ -2,6 +2,7 @@ import { advanceTick, startPromiseLoop } from "./higher-order";
 
 export { getBodyFor, getCostOfBody } from "./body";
 export type { Brand, Flavor } from "./types";
+export * from "./higher-order";
 
 export function processTurn() {
   advanceTick();

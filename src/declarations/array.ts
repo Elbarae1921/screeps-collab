@@ -33,7 +33,7 @@ declare global {
   }
 }
 
-export function injectMethods(): void {
+export function injectArrayMethods() {
   Array.prototype.flat = function flat<D extends number = 1>(depth?: D) {
     const o = Object(this);
     const a = arraySpeciesCreate(o, this.length);
