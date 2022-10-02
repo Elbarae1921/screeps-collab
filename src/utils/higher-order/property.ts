@@ -4,10 +4,10 @@ import { Reference } from "./reference";
  * One-tick cached property of a referenced instance
  */
 export class Property<A extends _HasId, T> {
-  constructor(private instance: Reference<A>, private map: (instance: A) => T | undefined) {}
+  constructor(protected readonly instance: Reference<A>, protected readonly map: (instance: A) => T | undefined) {}
 
-  private time?: number;
-  private _value?: T;
+  protected time?: number;
+  protected _value?: T;
 
   public get value(): T | undefined {
     const instance = this.instance.get;
@@ -35,5 +35,23 @@ export class ConstantProperty<A extends _HasId, T> extends Property<A, T> {
       this.cachedValue = super.value;
     }
     return this.cachedValue;
+  }
+}
+
+export class SettableProperty<A extends _HasId, T> extends Property<A, T> {
+  constructor(
+    instance: Reference<A>,
+    getter: (instance: A) => T | undefined,
+    private readonly setter: (instance: A, value: T) => void
+  ) {
+    super(instance, getter);
+  }
+
+  public set value(v: T) {
+    const instance = this.instance.get;
+    if (!instance) return;
+    this.setter(instance, v);
+    this.time = Game.time;
+    this._value = v;
   }
 }
